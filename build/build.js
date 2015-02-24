@@ -1,3 +1,6 @@
+
+;(function(){
+
 /**
  * Require the module at `name`.
  *
@@ -665,30 +668,6 @@ function parse(event) {
 
 });
 
-require.register("component~touchaction-property@0.0.1", function (exports, module) {
-
-/**
- * Module exports.
- */
-
-module.exports = touchActionProperty();
-
-/**
- * Returns "touchAction", "msTouchAction", or null.
- */
-
-function touchActionProperty(doc) {
-  if (!doc) doc = document;
-  var div = doc.createElement('div');
-  var prop = null;
-  if ('touchAction' in div.style) prop = 'touchAction';
-  else if ('msTouchAction' in div.style) prop = 'msTouchAction';
-  div = null;
-  return prop;
-}
-
-});
-
 require.register("component~transform-property@0.0.1", function (exports, module) {
 
 var styles = [
@@ -736,6 +715,30 @@ if (!prop || !window.getComputedStyle) {
   var val = getComputedStyle(el).getPropertyValue(map[prop]);
   document.body.removeChild(el);
   module.exports = null != val && val.length && 'none' != val;
+}
+
+});
+
+require.register("component~touchaction-property@0.0.1", function (exports, module) {
+
+/**
+ * Module exports.
+ */
+
+module.exports = touchActionProperty();
+
+/**
+ * Returns "touchAction", "msTouchAction", or null.
+ */
+
+function touchActionProperty(doc) {
+  if (!doc) doc = document;
+  var div = doc.createElement('div');
+  var prop = null;
+  if ('touchAction' in div.style) prop = 'touchAction';
+  else if ('msTouchAction' in div.style) prop = 'msTouchAction';
+  div = null;
+  return prop;
 }
 
 });
@@ -1322,4 +1325,11 @@ function visible(el) {
 
 });
 
-require("swipe");
+if (typeof exports == "object") {
+  module.exports = require("swipe");
+} else if (typeof define == "function" && define.amd) {
+  define("swipe", [], function(){ return require("swipe"); });
+} else {
+  (this || window)["swipe"] = require("swipe");
+}
+})()
